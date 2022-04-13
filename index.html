@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bai 8</title>
+    <link rel="stylesheet" type="text/css" href="css.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.png" />
+    <script src="sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2/dist/sweetalert2.min.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      .tabContainer {
+        width: 100%;
+        height: 350px;
+      }
+
+      .tabContainer .buttonContainer {
+        height: 15%;
+      }
+
+      .tabContainer .buttonContainer button {
+        width: 16%;
+        height: 100%;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 10px;
+        font-family: sans-serif;
+        font-size: 18px;
+        background-color: #eee;
+      }
+
+      .tabContainer .buttonContainer button:hover {
+        background-color: #d7d4d4;
+      }
+
+      .tabContainer .tabPanel {
+        height: 85%;
+        padding-top: 10px;
+        box-sizing: border-box;
+        font-family: sans-serif;
+        font-size: 22px;
+        display: none;
+      }
+
+      h1 {
+        font-weight: 100;
+        font-size: 20px;
+        text-indent: 20px;
+      }
+
+      .btn_sort_name,
+      .btn_sort_age,
+      .btn_show,
+      .btn_sum,
+      .btn_check,
+      .yellow,
+      .orange,
+      .green,
+      .blue {
+        border: 0;
+        background-color: #d7d4d4;
+        padding: 10px 20px;
+        color: white;
+        cursor: pointer;
+      }
+
+      p {
+        width: 50%;
+      }
+
+      input[type="text"] {
+        padding: 15px;
+        border-right: none;
+      }
+
+      input:focus,
+      .btn_search:focus {
+        outline: none;
+      }
+
+      .btn_search,
+      .btn_age {
+        padding: 15px;
+        margin-left: -7px;
+        background: none;
+        color: #000;
+        cursor: pointer;
+      }
+
+      .btn_add,
+      .btn_close .btn_view,
+      .gender {
+        padding: 15px;
+        cursor: pointer;
+      }
+
+      table.counter {
+        margin: 30px auto;
+      }
+
+      table.counter td {
+        padding: 10px;
+        text-align: center;
+      }
+
+      .page-title {
+        color: green;
+        font-style: 1.5rem;
+      }
+
+      .title {
+        color: blue;
+        font-size: 0.6rem;
+      }
+
+      .text-red {
+        color: red;
+      }
+
+      .button:hover {
+        cursor: pointer;
+      }
+
+      #render {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      #render td,
+      #render th {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+
+      #render tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      #render tr:hover {
+        background-color: #ddd;
+      }
+
+      #render th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #d7d4d4;
+        color: white;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 8;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-content {
+        margin: 50px auto;
+        border: 1px solid #999;
+        width: 60%;
+      }
+
+      h2,
+      p {
+        margin: 0 0 20px;
+        font-weight: 400;
+        color: #999;
+      }
+
+      input {
+        outline: none;
+      }
+
+      span {
+        color: #666;
+        display: block;
+        padding: 0 0 5px;
+      }
+
+      .openBtn {
+        display: flex;
+        justify-content: left;
+      }
+
+      .openButton {
+        border: none;
+        border-radius: 5px;
+        background-color: #1c87c9;
+        color: white;
+        padding: 14px 20px;
+        cursor: pointer;
+        position: fixed;
+      }
+
+      .loginPopup {
+        position: relative;
+        width: 100%;
+      }
+
+      .formPopup {
+        display: none;
+        position: fixed;
+        left: 45%;
+        top: 21%;
+        transform: translate(-50%, 5%);
+        border: 3px solid #999999;
+        z-index: 9;
+      }
+
+      .formContainer {
+        padding: 69px;
+        background-color: #fff;
+      }
+
+      .formContainer input[type="text"],
+      .formContainer input[type="number"],
+      .formContainer input[type="password"] {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 20px 0;
+        border: none;
+        background: #eee;
+      }
+
+      .formContainer input[type="text"]:focus,
+      .formContainer input[type="password"]:focus {
+        background-color: #ddd;
+        outline: none;
+      }
+
+      .formContainer .btn {
+        padding: 12px 20px;
+        border: none;
+        background-color: #8ebf42;
+        color: #fff;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 15px;
+        opacity: 0.8;
+      }
+
+      .formContainer .cancel {
+        background-color: #cc0000;
+      }
+
+      .formContainer .btn:hover,
+      .openButton:hover {
+        opacity: 1;
+      }
+
+      .btn {
+        border: none;
+        font-size: 20px;
+        font-size: 40px;
+        color: #7d7676;
+        background: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body style="padding: 20px">
+    <div class="tabContainer">
+      <div class="buttonContainer">
+        <button onclick="showPanel(0)">Bài 2</button>
+        <button onclick="showPanel(1)">Bài 3</button>
+        <button onclick="showPanel(2)">Bài 4</button>
+      </div>
+      <div class="tabPanel">
+        <button class="yellow" value="yellow" onclick="showTeam(value,array)">
+          Yellow
+        </button>
+        <button class="orange" value="orange" onclick="showTeam(value,array)">
+          Orange
+        </button>
+        <button class="green" value="green" onclick="showTeam(value,array)">
+          Green
+        </button>
+        <button class="blue" value="blue" onclick="showTeam(value,array)">
+          Blue
+        </button>
+        <p id="demo1"></p>
+        <br />
+        <h1>
+          ----2, search tất cả những thằng có tuổi lớn hơn 18 in ra màn hình
+        </h1>
+        <button onclick="checkAge(array3)" class="btn_show">Check Age</button>
+        <p id="demo2"></p>
+        <h1>----3, In tất cảcác team ra table, có các cột id name age team</h1>
+        <button class="btn_add" onclick="openForm()">Add</button>
+        <button class="btn_add" onclick="render()">Show</button>
+        <div class="loginPopup">
+          <div class="formPopup" id="popupForm">
+            <div class="formContainer">
+              <label for="id">
+                <strong>ID:</strong>
+              </label>
+              <input
+                type="text"
+                id="id"
+                placeholder="Your ID"
+                name="id"
+                required
+              />
+              <label for="name">
+                <strong>Name:</strong>
+              </label>
+              <input
+                type="text"
+                id="name"
+                placeholder="Your Name"
+                name="name"
+                required
+              />
+              <label for="age">
+                <strong>Age:</strong>
+              </label>
+              <input
+                type="number"
+                id="age"
+                placeholder="Your Age"
+                name="age"
+                required
+              />
+              <label for="team">
+                <strong>Team:</strong>
+              </label>
+              <input
+                type="text"
+                id="team"
+                placeholder="Your team"
+                name="team"
+                required
+              />
+              <div class="btn_show-item" style="display: flex">
+                <button class="btn_add" onclick="addData()">Add</button>
+                <button
+                  type="button"
+                  class="btn_close"
+                  onclick="closeForm()"
+                  style="margin: 0 10px"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <br />
+        <table class="table" id="render">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Team</th>
+              <th>Create</th>
+            </tr>
+          </thead>
+          <tbody id="letterList"></tbody>
+        </table>
+        <div>
+          <br />
+          <div class="flex" style="display: flex">
+            <button
+              class="btn"
+              onclick="previous()"
+              style="
+                margin-left: auto;
+                border: none;
+                font-size: 20px;
+                color: white;
+              "
+            >
+              <
+            </button>
+            <span id="pageInfo" style="margin: 0 5px"></span>
+            <button
+              class="btn"
+              onclick="nextPage()"
+              style="border: none; font-size: 20px; color: white"
+            >
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var tabButtons = document.querySelectorAll("button");
+      var tabPanels = document.querySelectorAll(".tabPanel");
+
+      function showPanel(panelIndex) {
+        tabButtons.forEach(function (tab) {
+          tab.style.color = "";
+          tab.style.backgroundColor = "";
+        });
+        tabButtons[panelIndex].style.color = "white";
+        tabButtons[panelIndex].style.backgroundColor = "#d7d4d4";
+        tabPanels.forEach(function (tab) {
+          tab.style.display = "none";
+        });
+        tabPanels[panelIndex].style.display = "block";
+      }
+      function openForm() {
+        document.getElementById("popupForm").style.display = "block";
+      }
+      function closeForm() {
+        document.getElementById("popupForm").style.display = "none";
+      }
+      // Bài 2: Tạo 2 mảng mỗi mảng gồm 8 phần tử, mỗi một phần tửcó một object gồm: ID, name, age, team.Chia đều cho 4 team Yellow, green, orange, blue.
+      // 1, Viết function. Làm nhiệm vụ.
+      // Khịchọn select team là màu gì. Thì sẽlọc trong mảng 1 và add sang mảng 2, với operator.
+      // 2, search tất cảnhững thằng có tuổi lớn hơn 18 in ra màn hình
+      // 3, In tất cảcác team ra table, có các cột id name age team
+      // 4, khi table có hơn 10 người sẽnhảy qua trang 2,
+      // 5, thêm người bằng cách tạo ra button create và mởlên 1 popup(modal) điền các thông tin cần thiết đểthêm.
+      // 6, Điểm cộng.Phân trang không bịbug
+
+      var array = [
+        { id: 0, name: "Tuan", age: 15, team: "yellow" },
+        { id: 1, name: "Hieu", age: 17, team: "orange" },
+        { id: 2, name: "Nga", age: 18, team: "green" },
+        { id: 3, name: "Tai", age: 19, team: "blue" },
+        { id: 4, name: "Nam", age: 20, team: "yellow" },
+        { id: 5, name: "An", age: 22, team: "yellow" },
+        { id: 6, name: "Thang", age: 12, team: "orange" },
+        { id: 7, name: "Phuoc", age: 14, team: "orange" },
+      ];
+      var array2 = [
+        { id: 8, name: "Nhung", age: 12, team: "yellow" },
+        { id: 9, name: "Phat", age: 14, team: "orange" },
+        { id: 10, name: "Dat", age: 16, team: "green" },
+        { id: 11, name: "Tai", age: 18, team: "blue" },
+        { id: 12, name: "Tho", age: 23, team: "yellow" },
+        { id: 13, name: "Binh", age: 20, team: "yellow" },
+        { id: 14, name: "Thu", age: 13, team: "orange" },
+        { id: 15, name: "Sinh", age: 12, team: "orange" },
+      ];
+      function showTeam(value, array3) {
+        var result = "";
+        var array3 = [...array, ...array2];
+        array3.forEach((item) => {
+          if (item.team === value) {
+            result +=
+              "ID : " +
+              item.id +
+              "<br> Tên : " +
+              item.name +
+              "<br> Tuổi : " +
+              item.age +
+              "<br> Team : " +
+              item.team +
+              "<hr>";
+          }
+        });
+        document.getElementById("demo1").innerHTML = result;
+      }
+
+      var array3 = [...array, ...array2];
+      var result = "";
+      function checkAge(array3) {
+        array3.forEach((item) => {
+          if (item.age > 18) {
+            result +=
+              "ID : " +
+              item.id +
+              "<br> Tên : " +
+              item.name +
+              "<br> Tuổi : " +
+              item.age +
+              "<br> Team : " +
+              item.team +
+              "<hr>";
+          }
+        });
+        document.getElementById("demo2").innerHTML = result;
+      }
+      function checkID(id) {
+        for (let i = 0; i < array3.length; i++) {
+          if (array3[i].id == id) {
+            return true;
+          }
+        }
+      }
+      function addData() {
+        var id = document.getElementById("id").value;
+        var name = document.getElementById("name").value;
+        var age = document.getElementById("age").value;
+        var team = document.getElementById("team").value;
+
+        var item = {
+          id,
+          name,
+          age,
+          team,
+        };
+        if (!checkID(id)) {
+          array3.push(item);
+          render();
+          Swal.fire({
+            icon: "success",
+            text: "Sucesss full!",
+          });
+          closeForm();
+          localStorage.setItem("member", JSON.stringify(id));
+          render();
+        } else {
+          alert("Bạn trùng id");
+        }
+      }
+      let first = 0;
+      let numberOfItems = 5;
+      let actualPage = 1;
+      let maxPage = Math.ceil(array3.length / numberOfItems);
+      function nextPage() {
+        if (first + numberOfItems <= array3.length) {
+          first += numberOfItems;
+          actualPage++;
+          render();
+        }
+      }
+      let maxPages = Math.ceil(array3.length / numberOfItems);
+
+      function previous() {
+        if (first - numberOfItems >= 0) {
+          first -= numberOfItems;
+          actualPage--;
+          render();
+        }
+      }
+      function render() {
+        let table = "";
+        for (let i = first; i < first + numberOfItems; i++) {
+          if (i < array3.length) {
+            table += `<tr>
+                <th>${array3[i].id}</th>
+                <th>${array3[i].name}</th>
+                <th>${array3[i].age}</th>
+                <th>${array3[i].team}</th>
+                <th><button onclick="handleRemoveClick()">X</button></th>
+                </tr>`;
+          }
+        }
+        document.getElementById("letterList").innerHTML = table;
+        showPageInfo();
+      }
+      function showPageInfo() {
+        document.getElementById("pageInfo").innerHTML = `
+      Page ${actualPage} / ${maxPages}
+  `;
+      }
+      // function delStudent(id) {
+      //   var s = id.parentNode.parentNode;
+      //   s.parentNode.removeChild(s);
+      //   Swal.fire({
+      //     title: "Are you sure?",
+      //     text: "You won't be able to revert this!",
+      //     icon: "warning",
+      //     showCancelButton: true,
+      //     confirmButtonColor: "#3085d6",
+      //     cancelButtonColor: "#d33",
+      //     confirmButtonText: "Yes, delete it!",
+      //   }).then((result) => {
+      //     if (result.isConfirmed) {
+      //       Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      //     }
+      //   });
+      //   showPageInfo();
+      //   render();
+      // }
+      function handleRemoveClick(itemList, item) {
+        const index = array3.indexOf(item);
+        let newItemList =[...array3];
+         newItemList.splice(index, 1);
+        render(newItemList);
+    }
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.0.18/sweetalert2.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.0.18/sweetalert2.min.js"></script>
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/dist/boxicons.js"
+      rel="stylesheet"
+    />
+  </body>
+</html>
